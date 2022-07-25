@@ -22,6 +22,6 @@ COPY ["./", "./"]
 RUN pnpm install
 RUN pnpm version
 
-ENV DATABASE_URL $DATABASE_URL
+ENV DATABASE_URL=$DATABASE_URL
 
 ENTRYPOINT [ "pnpm", "prisma:db-push", "&&", "pnpm", "prisma:db-seed" ]
