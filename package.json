@@ -10,8 +10,8 @@
     "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
   },
   "dependencies": {
-    "@prisma/client": "^3.15.2",
-    "prisma": "^3.12.0"
+    "@prisma/client": "^4.1.0",
+    "prisma": "^4.1.0"
   },
   "devDependencies": {
     "@types/chance": "^1.1.3",
