@@ -2,15 +2,12 @@
 
 ARG NODE_VERSION="18.5.0"
 ARG PNPM_VERSION="7.5.2"
-ARG DATABASE_URL
 
 ##
 # Create base image with pnpm installed 
 ##
 
 FROM node:${NODE_VERSION}-alpine
-
-ENV DATABASE_URL=$DATABASE_URL
 
 RUN apk update \
   && apk add git
