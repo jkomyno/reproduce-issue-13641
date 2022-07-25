@@ -2,6 +2,7 @@
 
 ARG NODE_VERSION="18.5.0"
 ARG PNPM_VERSION="7.5.2"
+ARG DATABASE_URL
 
 ##
 # Create base image with pnpm installed 
@@ -20,5 +21,7 @@ COPY ["./", "./"]
 
 RUN pnpm install
 RUN pnpm version
+
+ENV DATABASE_URL $DATABASE_URL
 
 ENTRYPOINT [ "pnpm", "prisma:db-push", "&&", "pnpm", "prisma:db-seed" ]

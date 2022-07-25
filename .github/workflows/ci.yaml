@@ -36,7 +36,7 @@ jobs:
           docker-compose -f docker/docker-compose.yml up -d
 
       - name: Build docker alpine
-        run: docker build --build-arg NODE_VERSION=${{ matrix.node }} -t jkomyno/pnpm-alpine -f ./docker/Dockerfile .
+        run: docker build --build-arg NODE_VERSION=${{ matrix.node }} --build-arg DATABASE_URL=${{ env.DATABASE_URL }} -t jkomyno/pnpm-alpine -f ./docker/Dockerfile .
 
       - name: Run docker alpine
         run: docker run jkomyno/pnpm-alpine
