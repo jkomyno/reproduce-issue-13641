@@ -4,7 +4,7 @@
     "prisma:version": "prisma version",
     "prisma:generate": "prisma generate",
     "prisma:db-push": "prisma db push",
-    "prisma:seed": "prisma db push"
+    "prisma:db-seed": "prisma db seed"
   },
   "prisma": {
     "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
