@@ -21,7 +21,9 @@ jobs:
       fail-fast: false
       matrix:
         os: [ubuntu-latest]
-        node: ['16.16.0', '18.0.0', '18.5.0']
+        node: ['16.16.0', '18.0.0', '18.3.0', '18.5.0']
+
+    container: 'alpine'
 
     name: "Build ${{ matrix.os }}: Node.js ${{ matrix.node }}"
 
