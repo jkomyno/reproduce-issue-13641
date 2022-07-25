@@ -26,7 +26,7 @@ jobs:
     env:
       DOCKER_BUILDKIT: 1
       COMPOSE_DOCKER_CLI_BUILD: 1 
-      DATABASE_URL: postgres://prisma:prisma@localhost:5432/tests
+      DATABASE_URL: postgres://prisma:prisma@host.docker.internal:5432/tests
 
     steps:
       - uses: actions/checkout@v3
@@ -39,7 +39,7 @@ jobs:
         run: docker build --build-arg NODE_VERSION=${{ matrix.node }} -t jkomyno/pnpm-alpine -f ./docker/Dockerfile .
 
       - name: Run docker alpine
-        run: docker run -e DATABASE_URL="${{ env.DATABASE_URL }}" jkomyno/pnpm-alpine
+        run: docker run --add-host host.docker.internal:host-gateway -e DATABASE_URL="${{ env.DATABASE_URL }}" jkomyno/pnpm-alpine
 
   build-native:
     runs-on: ${{ matrix.os }}
