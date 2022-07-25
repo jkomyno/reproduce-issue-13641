@@ -14,7 +14,34 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
+  build-docker:
+    runs-on: 'ubuntu-latest'
+
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest]
+        node: ['16.16.0', '18.0.0', '18.3.0', '18.5.0'] 
+
+    env:
+      DOCKER_BUILDKIT: 1
+      COMPOSE_DOCKER_CLI_BUILD: 1 
+      DATABASE_URL: postgres://prisma:prisma@localhost:5432/tests
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Run docker/docker-compose.yml
+        run: |
+          docker-compose -f docker/docker-compose.yml up -d
+
+      - name: Build docker alpine
+        run: docker build --build-arg NODE_VERSION=${{ matrix.os }} -t jkomyno/pnpm-alpine -f ./docker/Dockerfile .
+
+      - name: Run docker alpine
+        run: docker run jkomyno/pnpm-alpine
+
+  build-native:
     runs-on: ${{ matrix.os }}
 
     strategy:
@@ -22,8 +49,6 @@ jobs:
       matrix:
         os: [ubuntu-latest]
         node: ['16.16.0', '18.0.0', '18.3.0', '18.5.0']
-
-    container: 'alpine'
 
     name: "Build ${{ matrix.os }}: Node.js ${{ matrix.node }}"
 
