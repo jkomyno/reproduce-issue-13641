@@ -10,6 +10,8 @@ ARG DATABASE_URL
 
 FROM node:${NODE_VERSION}-alpine
 
+ENV DATABASE_URL=$DATABASE_URL
+
 RUN apk update \
   && apk add git
 RUN --mount=type=cache,id=pnpm-store,target=/root/.pnpm-store \
@@ -21,7 +23,5 @@ COPY ["./", "./"]
 
 RUN pnpm install
 RUN pnpm version
-
-ENV DATABASE_URL=$DATABASE_URL
 
 ENTRYPOINT [ "pnpm", "prisma:db-push", "&&", "pnpm", "prisma:db-seed" ]
