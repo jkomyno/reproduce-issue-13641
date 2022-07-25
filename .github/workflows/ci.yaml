@@ -1,0 +1,64 @@
+name: CI workflow
+
+on:
+  push:
+    branches: [ main ]
+    paths-ignore:
+      - '*.md'
+      - 'LICENSE'
+      - '.dockerignore'
+  pull_request:
+    branches: [ main ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest]
+        node: ['16.16.0', '18.0.0', '18.5.0']
+
+    name: "Build ${{ matrix.os }}: Node.js ${{ matrix.node }}"
+
+    env:
+      DOCKER_BUILDKIT: 1
+      COMPOSE_DOCKER_CLI_BUILD: 1 
+      DATABASE_URL: postgres://prisma:prisma@localhost:5432/tests
+
+    steps:
+      - name: Prepare git
+        run: git config --global core.autocrlf false
+
+      - uses: actions/checkout@v3
+
+      - name: Run docker/docker-compose.yml
+        run: |
+          docker-compose -f docker/docker-compose.yml up -d
+
+      - uses: pnpm/action-setup@v2.2.2
+        with:
+          run_install: false
+          version: 7
+
+      - name: User Node.js ${{ matrix.node }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node }}
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm i
+
+      - name: prisma version
+        run: pnpm run prisma:version
+
+      - name: prisma db push
+        run: pnpm run prisma:db-push
+
+      - name: prisma seed
+        run: pnpm run prisma:seed
