@@ -36,10 +36,10 @@ jobs:
           docker-compose -f docker/docker-compose.yml up -d
 
       - name: Build docker alpine
-        run: docker build --build-arg NODE_VERSION=${{ matrix.node }} -t jkomyno/pnpm-alpine -f ./docker/Dockerfile .
+        run: docker build --build-arg NODE_VERSION=${{ matrix.node }} -t jkomyno/rockylinux-8-node -f ./docker/Dockerfile .
 
       - name: Run docker alpine
-        run: docker run --add-host host.docker.internal:host-gateway -e DATABASE_URL="${{ env.DATABASE_URL }}" jkomyno/pnpm-alpine
+        run: docker run --add-host host.docker.internal:host-gateway -e DATABASE_URL="${{ env.DATABASE_URL }}" jkomyno/rockylinux-8-node
 
   build-native:
     runs-on: ${{ matrix.os }}
