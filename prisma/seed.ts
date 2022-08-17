@@ -9,12 +9,26 @@ async function main() {
       Price: 1,
     }
   })
+
+  await prisma.test2.create({
+    data: {
+      Type: 'type-2',
+      Price: 2,
+    }
+  })
+
+  await prisma.test3.create({
+    data: {
+      Type: 'type-3',
+      Price: 3,
+    }
+  })
 }
 
 main()
   .catch(e => {
     console.log('received error', e)
-    process.exit(1)
+    process.exit(10)
   }).finally(async () => {
     await prisma.$disconnect()
   })
