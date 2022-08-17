@@ -67,24 +67,19 @@ jobs:
         run: |
           docker-compose -f docker/docker-compose.yml up -d
 
-      - uses: pnpm/action-setup@v2.2.2
-        with:
-          run_install: false
-          version: 7
-
       - name: User Node.js ${{ matrix.node }}
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node }}
 
       - name: Install dependencies
-        run: pnpm i
+        run: npm i --legacy-peer-deps
 
       - name: prisma version
-        run: pnpm run prisma:version
+        run: npm run prisma:version
 
       - name: prisma db push
-        run: pnpm run prisma:db-push
+        run: npm run prisma:db-push
 
       - name: prisma db seed
-        run: pnpm run prisma:db-seed
+        run: npm run prisma:db-seed
