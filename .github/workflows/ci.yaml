@@ -35,10 +35,10 @@ jobs:
         run: |
           docker-compose -f docker/docker-compose.yml up -d
 
-      - name: Build docker alpine
+      - name: Build docker rockylinux:8
         run: docker build --build-arg NODE_VERSION=${{ matrix.node }} -t jkomyno/rockylinux-8-node -f ./docker/Dockerfile .
 
-      - name: Run docker alpine
+      - name: Run docker rockylinux:8
         run: docker run --add-host host.docker.internal:host-gateway -e DATABASE_URL="${{ env.DATABASE_URL }}" jkomyno/rockylinux-8-node
 
   build-native:
